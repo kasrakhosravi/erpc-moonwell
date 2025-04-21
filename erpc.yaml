@@ -1,21 +1,34 @@
 logLevel: warn
+
 database:
   evmJsonRpcCache:
-    driver: memory
-    maxItems: 1000000000
-    # driver: postgresql
-    # postgresql:
-    #  connectionUri: ${DATABASE_URL}
-    #  table: rpc_cache
+    connectors:
+      - id: memory-cache
+        driver: memory
+        memory:
+          maxItems: 1000000000
+      # - id: postgres-cache
+      #   driver: postgresql
+      #   postgresql:
+      #     connectionUri: ${DATABASE_URL}
+      #     table: rpc_cache
+    policies:
+      - network: "*"
+        method: "*"
+        finality: finalized
+        connector: memory-cache
+
 server:
   httpHostV4: "0.0.0.0"
   httpHostV6: "[::]"
   httpPort: 4000
+
 metrics:
   enabled: true
   hostV4: "0.0.0.0"
   hostV6: "[::]"
   port: 4001
+
 projects:
   - id: main
     cors:
@@ -39,7 +52,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -55,7 +68,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -71,7 +84,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -87,7 +100,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -102,7 +115,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -118,7 +131,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -134,7 +147,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -150,7 +163,7 @@ projects:
           timeout:
             duration: 60s
           retry:
-            maxCount: 3
+            maxAttempts: 3
             delay: 500ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -175,7 +188,7 @@ projects:
       #      jitter: 500ms
       - id: cdp-chain-8453
         type: evm
-        endpoint: ${CDP_BASE_RPC_URL}
+        endpoint: https://${CDP_BASE_RPC_URL}
         jsonRpc:
           supportsBatch: true
           batchMaxWait: 100ms
@@ -187,7 +200,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -206,7 +219,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -225,7 +238,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -244,7 +257,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -263,7 +276,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -282,7 +295,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -301,7 +314,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -320,7 +333,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -339,7 +352,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -358,7 +371,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -377,7 +390,7 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
@@ -396,11 +409,12 @@ projects:
           timeout:
             duration: 15s
           retry:
-            maxCount: 2
+            maxAttempts: 2
             delay: 1000ms
             backoffMaxDelay: 10s
             backoffFactor: 0.3
             jitter: 500ms
+            
 rateLimiters:
   budgets:
     - id: default-budget
