@@ -26,6 +26,10 @@ projects:
       allowedHeaders:
         - 'Content-Type'
         - 'Authorization'
+      allowedMethods:
+        - 'GET'
+        - 'POST'
+        - 'OPTIONS'
     networks:
       - architecture: evm
         evm:
